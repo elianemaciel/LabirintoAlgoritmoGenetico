@@ -97,7 +97,7 @@ class Algoritmo():
         return pais
 
 algoritmo = Algoritmo(
-    solucao="000101010000010101000101101010010000000000010100000011000100",
+    solucao=(27*2),
     caracteres=["00", "01", "10", "11"],
     taxa_crossover=0.6,
     taxa_mutacao=0.3

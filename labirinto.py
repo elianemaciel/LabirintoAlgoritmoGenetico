@@ -86,6 +86,9 @@ class NoLabirinto():
                 return True
         return False
 
+    def set_conteudo(self, conteudo='-'):
+        self.conteudo = conteudo
+
 
 class Agent():
     no = None
@@ -94,24 +97,40 @@ class Agent():
         self.no = no
 
     def move_direita(self, labirinto):
-        no = labirinto.get_posicao_labirinto(self.no.pos1, self.no.pos2+1)
-        self.no = no
-        no.conteudo = "-"
+        pos = self.no.pos2 + 1
+        if pos <= 9:
+            no = labirinto.get_posicao_labirinto(self.no.pos1, pos)
+            self.no = no
+            self.no.set_conteudo("-")
+            return True
+        return False
 
     def move_esquerda(self, labirinto):
-        no = labirinto.get_posicao_labirinto(self.no.pos1, self.no.pos2-1)
-        self.no = no
-        no.conteudo = "-"
+        pos = self.no.pos2 - 1
+        if pos > 0:
+            no = labirinto.get_posicao_labirinto(self.no.pos1, pos)
+            self.no = no
+            self.no.set_conteudo("-")
+            return True
+        return False
 
     def move_baixo(self, labirinto):
-        no = labirinto.get_posicao_labirinto(self.no.pos1+1, self.no.pos2)
-        self.no = no
-        no.conteudo = "-"
+        pos = self.no.pos1 + 1
+        if pos <= 9:
+            no = labirinto.get_posicao_labirinto(pos, self.no.pos2)
+            self.no = no
+            self.no.set_conteudo("-")
+            return True
+        return False
 
     def move_cima(self, labirinto):
-        no = labirinto.get_posicao_labirinto(self.no.pos1-1, self.no.pos2)
-        self.no = no
-        no.conteudo = "-"
+        pos = self.no.pos1 - 1
+        if pos > 0:
+            no = labirinto.get_posicao_labirinto(pos, self.no.pos2)
+            self.no = no
+            self.no.set_conteudo("-")
+            return True
+        return False
 
 def gera_labirinto():
     labirinto = Labirinto(tamanho=10)

@@ -12,17 +12,14 @@ from labirinto import gera_labirinto
 """
 
 def main():
-    gera_labirinto()
     eltismo = True
     # tamanho da populacao
-    # print(len("000101010000010101000101101010010000000000010100000011000100"))
-    # 00010101000001010100010110101001000000000001010000001100010000011010101000110111000001111
     tam_pop = 30
     # numero máximo de geracoes
     num_max_geracoes = 10000
 
     # define o número de genes do indivíduo baseado na solucao
-    num_genes = int(len(algoritmo.solucao)/2)
+    num_genes = int(27 * 2)
 
     # cria a primeira populacao aleatérioa
     populacao = Populacao(num_genes, tam_pop)
@@ -30,7 +27,7 @@ def main():
     tem_solucao = False
     geracao = 0
 
-    print("Iniciando... Aptidao da solucao: ", len(algoritmo.solucao))
+    print("Iniciando... Aptidao da solucao: ", algoritmo.solucao)
 
     # loop até o critério de parada
     while (not tem_solucao and geracao < num_max_geracoes):
@@ -49,7 +46,7 @@ def main():
         )
 
         # verifica se tem a solucao
-        tem_solucao = populacao.tem_solucao(algoritmo.solucao)
+        tem_solucao = populacao.tem_solucao()
 
 
     if (geracao == num_max_geracoes):

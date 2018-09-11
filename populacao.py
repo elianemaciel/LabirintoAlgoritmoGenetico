@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import random
+from labirinto import Agent, gera_labirinto
+
+labirinto = gera_labirinto()
 
 class Individuo():
 
@@ -12,7 +15,8 @@ class Individuo():
         caracteres = algoritmo.caracteres
 
         if num_genes:
-            for gene in range(num_genes):
+            self.genes += "00"
+            for gene in range(num_genes - 2 ):
                 pos = random.randint(0, 3)
                 self.genes += caracteres[pos]
 
@@ -33,32 +37,66 @@ class Individuo():
 
     def gera_aptidao(self):
         from algoritmo import algoritmo
-        from labirinto import Agent, gera_labirinto
+        global labirinto
+
         solucao = algoritmo.solucao
         self.aptidao = 0
 
-        labirinto = gera_labirinto()
         agent = Agent(labirinto.get_posicao_labirinto(9, 0))
 
-        for i in range(0, len(solucao), 2):
+        for i in range(0, solucao, 2):
             self.aptidao += 1
-            if (self.genes[i:i+1]) == "00":
-                if agent.get_parede_direita():
-                    self.aptidao -=10
-                agent.move_direita()
-            elif (self.genes[i:i+1]) == "01":
-                if agent.get_parede_acima():
-                    self.aptidao -=10
-                agent.move_cima()
-            elif (self.genes[i:i+1]) == "10":
-                if agent.get_parede_esquerda():
-                    self.aptidao -=10
-                agent.move_esquerda()
-            elif (self.genes[i:i+1]) == "11":
-                if agent.get_parede_baixo():
-                    self.aptidao -=10
-                agent.move_baixo()
+            if (self.genes[i:i+2]) == "00":
+                if agent.no.get_parede_direita():
+                    self.aptidao -= 10
+                if not agent.move_direita(labirinto):
+                    break
+            elif (self.genes[i:i+2]) == "01":
+                if agent.no.get_parede_acima():
+                    self.aptidao -= 10
+                if not agent.move_cima(labirinto):
+                    break
+            elif (self.genes[i:i+2]) == "10":
+                if agent.no.get_parede_esquerda():
+                    self.aptidao -= 10
+                if not agent.move_esquerda(labirinto):
+                    break
+            elif (self.genes[i:i+2]) == "11":
+                if agent.no.get_parede_baixo():
+                    self.aptidao -= 10
+                if not agent.move_baixo(labirinto):
+                    break
         return self.aptidao
+
+    def verifica_individuo(self):
+        global labirinto
+        from algoritmo import algoritmo
+        solucao = algoritmo.solucao
+
+        agent = Agent(labirinto.get_posicao_labirinto(9, 0))
+
+        for i in range(0, solucao, 2):
+            if (self.genes[i:i+2]) == "00":
+                if agent.no.get_parede_direita():
+                    return False
+                if not agent.move_direita(labirinto):
+                    return False
+            elif (self.genes[i:i+2]) == "01":
+                if agent.no.get_parede_acima():
+                    return False
+                if not agent.move_cima(labirinto):
+                    return False
+            elif (self.genes[i:i+2]) == "10":
+                if agent.no.get_parede_esquerda():
+                    return False
+                if not agent.move_esquerda(labirinto):
+                    return False
+            elif (self.genes[i:i+2]) == "11":
+                if agent.no.get_parede_baixo():
+                    return False
+                if not agent.move_baixo(labirinto):
+                    return False
+        return True
 
     def get_genes(self):
         return self.genes
@@ -92,29 +130,16 @@ class Populacao():
                     return
 
     # verifica se algum indivíduo da população possui a solução
-    def tem_solucao(self, solucao):
-        i = None
-        for j in range(len(self.individuos)):
-            if (self.individuos[j].get_genes() == solucao):
-                i = self.individuos[j]
-                break
+    def tem_solucao(self):
+        for individuo in self.individuos:
+            if individuo.verifica_individuo():
+                return True
 
-        if (i == None):
-            return False
-
-        return True
+        return False
 
     # ordena a população pelo valor de aptidão de cada indivíduo, do maior valor para o menor, assim se eu quiser obter o melhor indivíduo desta população, acesso a posição 0 do array de indivíduos
     def ordena_populacao(self):
-        trocou = True
-        while (trocou):
-            trocou = False
-            for i in range(len(self.individuos) - 1):
-                if (self.individuos[i].aptidao < self.individuos[i + 1].aptidao):
-                    temp = self.individuos[i]
-                    self.individuos[i] = self.individuos[i + 1]
-                    self.individuos[i + 1] = temp
-                    trocou = True
+        self.individuos = sorted(self.individuos, key=lambda x: x.aptidao, reverse=False)
 
     # número de indivíduos existentes na população
     def get_num_individuos(self):
