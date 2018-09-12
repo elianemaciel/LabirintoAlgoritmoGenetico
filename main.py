@@ -19,7 +19,7 @@ def main():
     num_max_geracoes = 10000
 
     # define o número de genes do indivíduo baseado na solucao
-    num_genes = int(27 * 2)
+    num_genes = int(27)
 
     # cria a primeira populacao aleatérioa
     populacao = Populacao(num_genes, tam_pop)

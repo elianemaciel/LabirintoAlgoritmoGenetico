@@ -43,9 +43,13 @@ class Algoritmo():
 
     def crossover(self, individuo1, individuo2):
         # sorteia o ponto de corte
-        len_genes = int((len(individuo1.get_genes())/2) - 2)
-        ponto_corte1 = int(random.randint(0, len_genes) + 1)
-        ponto_corte2 = int(random.randint(0, len_genes)) + int(len(individuo1.get_genes())/2)
+        len_genes = int(len(individuo1.get_genes())/2)
+        ponto_corte1 = int(random.randint(0, len_genes) + 2)
+        if ponto_corte1 % 2 != 0:
+            ponto_corte1 += 1
+        ponto_corte2 = int(random.randint(0, len_genes)) + int(len(individuo1.get_genes())/2) - 2
+        if ponto_corte2 % 2 != 0:
+            ponto_corte2 += 1
 
         filhos = []
 
@@ -99,6 +103,6 @@ class Algoritmo():
 algoritmo = Algoritmo(
     solucao=(27*2),
     caracteres=["00", "01", "10", "11"],
-    taxa_crossover=0.6,
-    taxa_mutacao=0.3
+    taxa_crossover=1.0,
+    taxa_mutacao=0.5
 )

@@ -86,7 +86,7 @@ class NoLabirinto():
                 return True
         return False
 
-    def set_conteudo(self, conteudo='-'):
+    def set_conteudo(self, conteudo='*'):
         self.conteudo = conteudo
 
 
@@ -101,7 +101,7 @@ class Agent():
         if pos <= 9:
             no = labirinto.get_posicao_labirinto(self.no.pos1, pos)
             self.no = no
-            self.no.set_conteudo("-")
+            self.no.set_conteudo("*")
             return True
         return False
 
@@ -110,7 +110,7 @@ class Agent():
         if pos > 0:
             no = labirinto.get_posicao_labirinto(self.no.pos1, pos)
             self.no = no
-            self.no.set_conteudo("-")
+            self.no.set_conteudo("*")
             return True
         return False
 
@@ -119,7 +119,7 @@ class Agent():
         if pos <= 9:
             no = labirinto.get_posicao_labirinto(pos, self.no.pos2)
             self.no = no
-            self.no.set_conteudo("-")
+            self.no.set_conteudo("*")
             return True
         return False
 
@@ -128,7 +128,7 @@ class Agent():
         if pos > 0:
             no = labirinto.get_posicao_labirinto(pos, self.no.pos2)
             self.no = no
-            self.no.set_conteudo("-")
+            self.no.set_conteudo("*")
             return True
         return False
 
